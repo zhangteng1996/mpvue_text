@@ -1,17 +1,17 @@
 <template>
   <div id="booksContainer">
     <swiper indicator-dots indicator-color="green" indicator-active-color="deeppink">
-      <swiper-item v-for="(item,index) in carouselList" :key="index">
-        <img src="/static/imgs/firstView/1.jpg" alt="">
+      <swiper-item v-for="(item, index) in carouselList" :key="index">
+        <img :src="item.image" alt="">
       </swiper-item>
     </swiper>
     <div class="books">
       <div class="books_head">
         <span>全部商品</span>
-        <span @click="toBooksList"  class="more"> > </span>
+        <span @click="toBooksList" class="more"> > </span>
       </div>
       <ul class="books_list">
-        <li v-for="(book, index) in booksList" :key="index">
+        <li @click="toDetail(book)" v-for="(book, index) in booksList" :key="index">
           <img :src="book.image" alt="">
           <p>《{{book.title}}》</p>
           <p>{{book.author}}</p>
@@ -27,7 +27,7 @@
   export default {
     data(){
       return {
-        booksList:[]
+        booksList: []
       }
     },
     mounted(){
@@ -35,17 +35,23 @@
         this.booksList = booksList
       }, 100)
     },
-    methods:{
-        toBooksList(){
-            wx.navigateTo({
-              url:'/pages/bookList/main?booksList=' + JSON.stringify(this.booksList)
-            })
-        }
+    methods: {
+
+      toBooksList(){
+        wx.navigateTo({
+          url: '/pages/bookList/main?booksList=' + JSON.stringify(this.booksList)
+        })
+      },
+      toDetail(book){
+        wx.navigateTo({
+          url: '/pages/detail/main?book=' + JSON.stringify(book)
+        })
+      }
     },
-    computed:{
-        carouselList(){
-            return [...this.booksList].splice(0,3)
-        }
+    computed: {
+      carouselList(){
+        return [...this.booksList].splice(0, 3)
+      }
     }
   }
 </script>
@@ -53,7 +59,6 @@
 <style lang="stylus" rel="stylesheet/stylus">
   #booksContainer
     width 100%;
-
     swiper
       width 100%
       height 400rpx
